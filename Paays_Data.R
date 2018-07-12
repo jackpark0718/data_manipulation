@@ -258,4 +258,4 @@ likeliness_ages_values <- c(likelies_ave_age, clean_data_ave_age)
 likeliness_ages_names <- c("Likely", "Average")
 likeliness_ages_types <- rep(c("Age"), 2)
 likeliness_ages_comp <- data.frame(likeliness_ages_names, likeliness_ages_types, likeliness_ages_values)
-ggplot(data = likeliness_ages_comp, aes(x = likeliness_ages_types, y = likeliness_ages_values, fill = likeliness_ages_names)) + geom_bar(stat = "identity", position = "dodge") + ylab("Age(Years)") + ggtitle("Likely vs Average Age") #edit legend text
+ggplot(data = likeliness_ages_comp, aes(x = likeliness_ages_types, y = likeliness_ages_values, fill = likeliness_ages_names)) + geom_bar(stat = "identity", position = "dodge") + xlab("") + ylab("Age(Years)") + ggtitle("Likely vs Average Age") #edit legend text
