@@ -131,7 +131,7 @@ data.split <- function(BudgetOptions, n){
       b <- paste("leisure_travel_type_", Leisure_Options[i], sep ="", collapse = NULL)
       c <- subset(clean_data, ave_vacation_budget==bud)
       c <- c[i+1]
-      assign(x=z, value = percent(sum(c)/nrow(c)))
+      assign(x=z, value = sum(c)/nrow(c))
     }
   }
 }
@@ -140,12 +140,12 @@ budget5000plus <- subset(clean_data, ave_vacation_budget>=5000)
 for (k in 1:5) {
   z <- paste("budget5000plus_", Leisure_Options[k], sep = "", collapse = NULL)
   c <- budget5000plus[k+1]
-  assign(x=z, value = percent(sum(c)/nrow(c)))
+  assign(x=z, value = sum(c)/nrow(c))
 }
 for (m in 1:5) {
   z <- paste("total_budget_", Leisure_Options[m], sep = "", collapse = NULL)
   c <- clean_data[m+1]
-  assign(x=z, value = percent(sum(c)/nrow(c)))
+  assign(x=z, value = sum(c)/nrow(c))
 }
 #find the percentage chance that each option of leisure travel was selected for the budget groups and for the group as a whole
 Groups <- c(rep("<$1,000", 5), rep("$1,000-$2,000", 5), rep("$2,000-$5,000", 5), rep("$5,000-$10,000", 5), rep("$10,000+", 5), rep("$5,000+", 5), rep("Everyone", 5))
@@ -155,7 +155,7 @@ Percentage_Wanted <- c(budget1000_Beach, budget1000_Sightseeing, budget1000_Trek
 budgetcomparison <- data.frame(Groups, Leisure_Activities, Percentage_Wanted)
 Groups2 <- factor(Groups, levels = c("<$1,000", "$1,000-$2,000", "$2,000-$5,000", "$5,000-$10,000", "$5,000+", "$10,000+", "Everyone"))
 library(ggplot2)
-ggplot(budgetcomparison, aes(fill = Leisure_Activities, y = Percentage_Wanted, x = Groups2)) + geom_bar(position = "dodge", stat = "identity") + ggtitle("Budget Groups Preferred Leisure Activities") + labs(x = "Budget Groups", y = "Percentage of Users Preferred")
+ggplot(budgetcomparison, aes(fill = Leisure_Activities, y = Percentage_Wanted, x = Groups2)) + geom_bar(position = "dodge", stat = "identity") + ggtitle("Budget Groups Preferred Leisure Activities") + labs(x = "Budget Groups", y = "Percentage of Users Preferred") + theme(legend.title = element_blank()) + scale_y_continuous(limits = c(0,1), expand = c(0,0), labels = percent)
 Age_Options <- unique(clean_data$ave_age_range, incomparables = FALSE)
 Age_Options <- sort(Age_Options, decreasing = FALSE)
 freq1000 <- as.data.frame(table(budget1000$ave_age_range))
@@ -171,9 +171,10 @@ Ages <- rep(Age_Options, 6)
 AgeVaca <- data.frame(Ages, Budget, Frequencies)
 AgeVaca$Budget2 <- factor(AgeVaca$Budget, levels = c("<$1,000", "$1,000-$2,000", "$2,000-$5,000", "$5,000-$10,000", "$10,000+", "Everyone"))
 ggplot(AgeVaca, aes(fill = Ages, y = Frequencies, x = Budget2)) + geom_bar(position = "stack", stat = "identity") + ggtitle("Budget Groups by Age") + labs(x = "Budget Groups", y = "Number of Users")
-data.split <- function(Age_Options, n){
-  for(j in 1:n){
-    age <- Age_Options[j]
+Age_Possibilities <- c(21, 29.5, 39.5, 49.5, 59.5, 69.5, 75)
+data.split <- function(Age_Possibilities, n){
+  for(j in 1:7){
+    age <- Age_Possibilities[j]
     y <- paste("age", age, sep = "", collapse = NULL)
     assign(x=y, value = subset(clean_data, ave_age_range==age))
     for(i in 1:5){
@@ -185,7 +186,6 @@ data.split <- function(Age_Options, n){
     }
   }
 }
-Age_Possibilities <- c(21, 29.5, 39.5, 49.5, 59.5, 69.5, 75)
 Age_Beach <- c(age21_Beach, age29.5_Beach, age39.5_Beach, age49.5_Beach, age59.5_Beach, age69.5_Beach, age75_Beach)
 Age_Sightseeing <- c(age21_Sightseeing, age29.5_Sightseeing, age39.5_Sightseeing, age49.5_Sightseeing, age59.5_Sightseeing, age69.5_Sightseeing, age75_Sightseeing)
 Age_Trekking <- c(age21_Trekking, age29.5_Trekking, age39.5_Trekking, age49.5_Trekking, age59.5_Trekking, age69.5_Trekking, age75_Trekking)
@@ -241,21 +241,130 @@ data_3$ave_age_range <- type.convert(data_3$ave_age_range, na.strings = "NA", de
 data_3 <- subset(data_3, !is.na(ave_vacation_budget))
 data_3 <- subset(data_3, !is.na(ave_finance_range))
 data_3 <- subset(data_3, !is.na(ave_age_range))
+data_4 <- subset(data_2, very_likely!=1)
+data_4 <- subset(data_4, likely!=1)
+data_4$ave_vacation_budget <- type.convert(data_4$ave_vacation_budget, na.strings = "NA", dec=".", numerals = c("no.loss"))
+data_4$ave_finance_range <- type.convert(data_4$ave_finance_range, na.strings = "NA", dec=".", numerals = c("no.loss"))
+data_4$ave_age_range <- type.convert(data_4$ave_age_range, na.strings = "NA", dec=".", numerals = c("no.loss"))
+data_4 <- subset(data_4, !is.na(ave_vacation_budget))
+data_4 <- subset(data_4, !is.na(ave_finance_range))
+data_4 <- subset(data_4, !is.na(ave_age_range))
 #getting rid of those who didn't answer all of the pertinent questions
 likelies_ave_budget <- sum(data_3$ave_vacation_budget)/nrow(data_3)
 likelies_ave_age <- sum(data_3$ave_age_range)/nrow(data_3)
 likelies_ave_finance_range <- sum(data_3$ave_finance_range)/nrow(data_3)
-clean_data_ave_budget <- sum(clean_data$ave_vacation_budget)/nrow(clean_data)
-clean_data_ave_age <- sum(clean_data$ave_age_range)/nrow(clean_data)
-clean_data_ave_finance_range <- sum(clean_data$ave_finance_range)/nrow(clean_data)
-likeliness_values <- c(likelies_ave_budget, likelies_ave_finance_range, clean_data_ave_budget, clean_data_ave_finance_range)
-likeliness_names <- c(rep("Likely", 2), rep("Average", 2))
+unlikelies_ave_budget <- sum(data_4$ave_vacation_budget)/nrow(data_4)
+unlikelies_ave_age <- sum(data_4$ave_age_range)/nrow(data_4)
+unlikelies_ave_finance_range <- sum(data_4$ave_finance_range)/nrow(data_4)
+likeliness_values <- c(likelies_ave_budget, likelies_ave_finance_range, unlikelies_ave_budget, unlikelies_ave_finance_range)
+likeliness_names <- c(rep("Likely", 2), rep("Unlikely", 2))
 likeliness_types <- rep(c("Budget", "Finance Range"), 2)
 likeliness_comp <- data.frame(likeliness_names, likeliness_types, likeliness_values)
-ggplot(data = likeliness_comp, aes(x = likeliness_types, y = likeliness_values, fill = likeliness_names)) + geom_bar(stat = "identity", position = "dodge") + xlab("") + ylab("Cost($)") + ggtitle("Likely vs Average Budgets and Finance Ranges") #edit legend text
+ggplot(data = likeliness_comp, aes(x = likeliness_names, y = likeliness_values, fill = likeliness_types)) + geom_bar(stat = "identity", position = "dodge") + xlab("") + ylab("Cost($)") + ggtitle("Likely vs Unlikely Budgets and Finance Ranges") + theme(legend.title = element_blank()) + annotate("text", label = "15% rise", x = 0.8, y = 2700) + annotate("text", label = "46% drop", x = 2.22, y = 1600) + geom_segment(aes(x = 1, xend = 1, y = likelies_ave_budget, yend = likelies_ave_finance_range), arrow = arrow(length = unit(0.3, "cm"))) + geom_segment(aes(x = 2, xend = 2, y = unlikelies_ave_budget, yend = unlikelies_ave_finance_range), arrow = arrow(length = unit(0.3, "cm")))
 #likelies tend to have lower budgets, but much larger finance ranges than average
-likeliness_ages_values <- c(likelies_ave_age, clean_data_ave_age)
-likeliness_ages_names <- c("Likely", "Average")
+likeliness_ages_values <- c(likelies_ave_age, unlikelies_ave_age)
+likeliness_ages_names <- c("Likely", "Unlikely")
 likeliness_ages_types <- rep(c("Age"), 2)
 likeliness_ages_comp <- data.frame(likeliness_ages_names, likeliness_ages_types, likeliness_ages_values)
-ggplot(data = likeliness_ages_comp, aes(x = likeliness_ages_types, y = likeliness_ages_values, fill = likeliness_ages_names)) + geom_bar(stat = "identity", position = "dodge") + xlab("") + ylab("Age(Years)") + ggtitle("Likely vs Average Age") #edit legend text
+ggplot(data = likeliness_ages_comp, aes(x = likeliness_ages_types, y = likeliness_ages_values, fill = likeliness_ages_names)) + geom_bar(stat = "identity", position = "dodge") + xlab("") + ylab("Age(Years)") + ggtitle("Likely vs Unlikely Age") + theme(legend.title = element_blank())
+Leisure_Options <- c("Beach", "Sightseeing", "Trekking", "Skiing", "Other")
+for(f in 1:5){
+  z <- paste("likelies_", Leisure_Options[f], sep = "", collapse = NULL)
+  assign(x=z, value = sum(data_3[f+25])/nrow(data_3))
+}
+for(g in 1:5){
+  z <- paste("unlikelies_", Leisure_Options[g], sep = "", collapse = NULL)
+  assign(x=z, value = sum(data_4[g+25])/nrow(data_4))
+}
+Leisure_List <- rep(c("Beach", "Sightseeing and Touring", "Trekking", "Skiing, Golfing, Biking, etc...", "Other"), 2)
+Leisure_List <- factor(Leisure_List, levels = c("Beach", "Sightseeing and Touring", "Trekking", "Skiing, Golfing, Biking, etc...", "Other"))
+Preferred_Percentages <- c(likelies_Beach, likelies_Sightseeing, likelies_Trekking, likelies_Skiing, likelies_Other, unlikelies_Beach, unlikelies_Sightseeing, unlikelies_Trekking, unlikelies_Skiing, unlikelies_Other)
+Likeness <- rep(c("Likely", "Unlikely"), each = 5)
+likeness_leisures <- data.frame(Likeness, Leisure_List, Preferred_Percentages)
+ggplot(likeness_leisures, aes(fill = Likeness, y = Preferred_Percentages, x = Leisure_List)) + geom_bar(position = "dodge", stat = "identity") + ggtitle("Likely vs Unlikely Preferred Travels") + labs(x = "", y = "Population Seeking(%)") + theme(legend.title = element_blank()) + scale_y_continuous(expand = c(0,0), breaks = round(seq(min(likeness_leisures$Preferred_Percentages), max(likeness_leisures$Preferred_Percentages), by = 0.1), 1))
+cities_canada <- read.csv("canadian_cities.csv")
+cities_canada <- unique(cities_canada[,2:6])
+plot(cities_canada$longitude, cities_canada$lattitude)
+cities_data <- subset(wishpond, select = c("Email", "Geoip.City", "Geoip.State", "ave_finance_range", "ave_vacation_budget", "ave_age_range", "leisure_travel_type_Beach", "leisure_travel_type_Sightseeing_Touring", "leisure_travel_type_Trekking", "leisure_travel_type_Skiing_Golfing_Biking", "leisure_travel_type_Other", "likelihood"))
+cities_data <- subset(cities_data, Geoip.City !="")
+cities_data$lat <- 0
+cities_data$long <- 0
+cities_data$Geoip.City <- as.character(cities_data$Geoip.City)
+cities_canada$City <- as.character(cities_canada$City)
+cities_data$Geoip.State <- as.character(cities_data$Geoip.State)
+for(q in 1:nrow(cities_data)){
+  for (r in 1:nrow(cities_canada)) {
+    if(identical(cities_data$Geoip.City[q], cities_canada$City[r])){
+      cities_data$lat[q] <- cities_canada$lattitude[r]
+      cities_data$long[q] <- cities_canada$longitude[r]
+      q <- q+1
+    }
+  }
+}
+for (s in 1:nrow(cities_data)) {
+  if(cities_data$lat[s]==0){
+    if(cities_data$long[s]==0){
+      if(identical(cities_data$Geoip.State[s], "Alberta")){
+        cities_data$Geoip.City[s] <- "Edmonton"
+      }
+      if(identical(cities_data$Geoip.State[s], "British Columbia")){
+        cities_data$Geoip.City[s] <- "North Vancouver"
+      }
+      if(identical(cities_data$Geoip.State[s], "Manitoba")){
+        cities_data$Geoip.City[s] <- "Winnipeg"
+      }
+      if(identical(cities_data$Geoip.State[s], "New Brunswick")){
+        cities_data$Geoip.City[s] <- "Fredericton"
+      }
+      if(identical(cities_data$Geoip.State[s], "Newfoundland and Labrador")){
+        cities_data$Geoip.City[s] <- "St. John's"
+      }
+      if(identical(cities_data$Geoip.State[s], "Northwest Territories")){
+        cities_data$Geoip.City[s] <- "Yellowknife"
+      }
+      if(identical(cities_data$Geoip.State[s], "Nova Scotia")){
+        cities_data$Geoip.City[s] <- "Halifax"
+      }
+      if(identical(cities_data$Geoip.State[s], "Nunavut")){
+        cities_data$Geoip.City[s] <- "Iqaliut"
+      }
+      if(identical(cities_data$Geoip.State[s], "Ontario")){
+        cities_data$Geoip.City[s] <- "Toronto"
+      }
+      if(identical(cities_data$Geoip.State[s], "Prince Edward Island")){
+        cities_data$Geoip.City[s] <- "Charlottetown"
+      }
+      if(identical(cities_data$Geoip.State[s], "Quebec")){
+        cities_data$Geoip.City[s] <- "Montréal-Ouest"
+      }
+      if(identical(cities_data$Geoip.State[s], "Saskatchewan")){
+        cities_data$Geoip.City[s] <- "Regina"
+      }
+      if(identical(cities_data$Geoip.State[s], "Yukon")){
+        cities_data$Geoip.City[s] <- "Whitehorse"
+      }
+    }
+  }
+}
+#taking all of those who are not in registered cities from the data fram and setting their city
+#as the largest of whatever province they're from
+for(q in 1:nrow(cities_data)){
+  for (r in 1:nrow(cities_canada)) {
+    if(identical(cities_data$Geoip.City[q], cities_canada$City[r])){
+      cities_data$lat[q] <- cities_canada$lattitude[r]
+      cities_data$long[q] <- cities_canada$longitude[r]
+      q <- q+1
+    }
+  }
+}
+cities_data <- subset(cities_data, lat!=0)
+cities_data <- subset(cities_data, Geoip.State!="Kingston") #get rid of our Jamaican friend
+Province_Options <- unique(cities_data$Geoip.State, incomparables = FALSE)
+library(devtools)
+library(easyGgplot2)
+ggplot2.scatterplot(data = cities_data, xName = "long", yName = "lat", groupName = "Geoip.State", size = length(Province_Options), backgroundColor = "white") + ggtitle("Location of Users") + labs(x = "Lattitude", y = "Longitude") + theme(legend.title = element_blank()) + ylim(42, 63) + xlim(-135, -50)
+#let's do the same, but with only those who answered likely or very likely
+cities_data <- subset(cities_data, likelihood!="Unlikely")
+cities_data <- subset(cities_data, likelihood!="More likely not")
+ggplot2.scatterplot(data = cities_data, xName = "long", yName = "lat", groupName = "Geoip.State", size = length(Province_Options), backgroundColor = "white", groupColors = c("red", "blue", "green", "pink", "grey", "purple", "orange", "turquoise", "maroon", "black")) + ggtitle("Location of Likely Users") + labs(x = "Lattitude", y = "Longitude") + theme(legend.title = element_blank()) + ylim(42, 63) + xlim(-135, -50)
+#the biggest difference between the two is that the east coasters numbers seem to drop quite a bit while west coast stays largely the same
