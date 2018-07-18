@@ -1,9 +1,10 @@
 library(tidyr)
 setwd("/Users/jackpark/Desktop") #set your directory
-wishpond <- read.csv("Paays July 10th.csv")
+wishpond <- read.csv("Paays July17th.csv")
 wishpond$finance_range <- wishpond$Whatis.The.Desired.Amount.You.Would.Want.To.Finance.
-wishpond$vacation_budget <- wishpond$How.much.do.you.typically.spend.on.a.vacation.package.
-wishpond$leisure_travel_type <- wishpond$What.does.your.dream.vacation.look.like...select.all.that.apply.
+wishpond$vacation_budget <- wishpond$How.Much.Do.You.Typically.Spend.On.Your.Vacation.Packages..Fligh
+wishpond$leisure_travel_type <- wishpond$What.Type.Of.Leisure.Travel.Do.You.Like
+wishpond$Are.You.Interested.In.Financing.Your.Next.Holiday.With.12.Equal <- NULL
 #there are   options in regards to what the finance range can be, so I can just replace
 #each option with whatever is the average of its range and for $10,000+ I'll just set the value to 10000
 ave.finance_range <- function(wishpond, finance_range){
@@ -111,7 +112,7 @@ for(l in 1:nrow(wishpond)){
   }
 }
 library(scales)
-clean_data <- subset(wishpond, select = c("Email", "leisure_travel_type_Beach", "leisure_travel_type_Sightseeing_Touring", "leisure_travel_type_Trekking", "leisure_travel_type_Skiing_Golfing_Biking", "leisure_travel_type_Other", "ave_vacation_budget", "ave_finance_range", "ave_age_range"))
+clean_data <- subset(wishpond, select = c("leisure_travel_type_Beach", "leisure_travel_type_Sightseeing_Touring", "leisure_travel_type_Trekking", "leisure_travel_type_Skiing_Golfing_Biking", "leisure_travel_type_Other", "ave_vacation_budget", "ave_finance_range", "ave_age_range"))
 clean_data$ave_vacation_budget <- type.convert(clean_data$ave_vacation_budget, na.strings = "NA", dec=".", numerals = c("no.loss"))
 clean_data$ave_finance_range <- type.convert(clean_data$ave_finance_range, na.strings = "NA", dec=".", numerals = c("no.loss"))
 clean_data$ave_age_range <- type.convert(clean_data$ave_age_range, na.strings = "NA", dec=".", numerals = c("no.loss"))
@@ -122,7 +123,7 @@ clean_data <- subset(clean_data, !is.na(ave_age_range))
 Leisure_Options <- c("Beach", "Sightseeing", "Trekking", "Skiing", "Other")
 BudgetOptions <- c(1000, 1500, 3500, 7500, 10000)
 data.split <- function(BudgetOptions, n){
-  for(j in 1:n){
+  for(j in 1:5){
     bud <- BudgetOptions[j]
     y <- paste("budget", bud, sep = "", collapse = NULL)
     assign(x=y, value = subset(clean_data, ave_vacation_budget==bud))
@@ -130,7 +131,7 @@ data.split <- function(BudgetOptions, n){
       z <- paste("budget", bud, "_", Leisure_Options[i], sep = "", collapse = NULL)
       b <- paste("leisure_travel_type_", Leisure_Options[i], sep ="", collapse = NULL)
       c <- subset(clean_data, ave_vacation_budget==bud)
-      c <- c[i+1]
+      c <- c[i]
       assign(x=z, value = sum(c)/nrow(c))
     }
   }
@@ -139,12 +140,12 @@ budget5000plus <- subset(clean_data, ave_vacation_budget>=5000)
 #split the data into each different price range to compare all of the ranges
 for (k in 1:5) {
   z <- paste("budget5000plus_", Leisure_Options[k], sep = "", collapse = NULL)
-  c <- budget5000plus[k+1]
+  c <- budget5000plus[k]
   assign(x=z, value = sum(c)/nrow(c))
 }
 for (m in 1:5) {
   z <- paste("total_budget_", Leisure_Options[m], sep = "", collapse = NULL)
-  c <- clean_data[m+1]
+  c <- clean_data[m]
   assign(x=z, value = sum(c)/nrow(c))
 }
 #find the percentage chance that each option of leisure travel was selected for the budget groups and for the group as a whole
@@ -181,7 +182,7 @@ data.split <- function(Age_Possibilities, n){
       z <- paste("age", age, "_", Leisure_Options[i], sep = "", collapse = NULL)
       b <- paste("leisure_travel_type_", Leisure_Options[i], sep ="", collapse = NULL)
       c <- subset(clean_data, ave_age_range==age)
-      c <- c[i+1]
+      c <- c[i]
       assign(x=z, value = sum(c)/nrow(c)*100)
     }
   }
@@ -199,7 +200,7 @@ lines(x = Age_Data$Age_Possibilities, y = Age_Data$Age_Skiing, type = "l", col =
 lines(x = Age_Data$Age_Possibilities, y = Age_Data$Age_Other, type = "l", col = "purple", lwd = 2)
 legend("topright", legend = c("Beach", "Sightseeing and Touring", "Trekking", "Skiing, Golfing, Biking, etc...", "Other"), col = c("red", "yellow", "green", "blue", "purple"), lty = 1, cex = 0.6, title = "Leisure Types", text.font = 4, box.lty = 1, lwd = 2, bg = "light blue", box.col = "light blue")
 #split data up by likelihoods
-wishpond$likelihood <- wishpond$If.you.could.finance.your.vacation.over.12.months..how.likely.are.you.to.do.so.
+wishpond$likelihood <- wishpond$How.Willing.Would.You.Be.To.Finance.A.Vacation.
 data_2 <- subset(wishpond, likelihood != "")
 #subsetted so that no one who didn't answer the question is included
 data_2$unlikely <- 0
@@ -225,10 +226,12 @@ for(p in 1:nrow(data_2)){
 }
 chance_unlikely <- round(with(data_2, sum(unlikely)/nrow(data_2))*100, digits = 1)
 chance_more_likely_not <- round(with(data_2, sum(more_likely_not)/nrow(data_2))*100, digits = 1)
+chance_prolly_not <- chance_unlikely + chance_more_likely_not
 chance_likely <- round(with(data_2, sum(likely)/nrow(data_2))*100, digits = 1)
 chance_very_likely <- round(with(data_2, sum(very_likely)/nrow(data_2))*100, digits = 1)
-slices <- c(chance_unlikely, chance_more_likely_not, chance_likely, chance_very_likely)
-lbls <- c("Unlikely", "More Likely Not", "Likely", "Very Likely")
+chance_prolly_yes <- chance_likely+chance_very_likely
+slices <- c(chance_prolly_not, chance_prolly_yes)
+lbls <- c("Unlikely", "Likely")
 lbls <- paste(lbls, slices)
 lbls <- paste(lbls, "%", sep = "")
 pie(slices, labels = lbls, col = rainbow(length(lbls)), main = "How likely are you to finance a vacation?")
@@ -253,14 +256,11 @@ data_4 <- subset(data_4, !is.na(ave_age_range))
 likelies_ave_budget <- sum(data_3$ave_vacation_budget)/nrow(data_3)
 likelies_ave_age <- sum(data_3$ave_age_range)/nrow(data_3)
 likelies_ave_finance_range <- sum(data_3$ave_finance_range)/nrow(data_3)
-unlikelies_ave_budget <- sum(data_4$ave_vacation_budget)/nrow(data_4)
-unlikelies_ave_age <- sum(data_4$ave_age_range)/nrow(data_4)
-unlikelies_ave_finance_range <- sum(data_4$ave_finance_range)/nrow(data_4)
-likeliness_values <- c(likelies_ave_budget, likelies_ave_finance_range, unlikelies_ave_budget, unlikelies_ave_finance_range)
-likeliness_names <- c(rep("Likely", 2), rep("Unlikely", 2))
-likeliness_types <- rep(c("Budget", "Finance Range"), 2)
+likeliness_values <- c(likelies_ave_budget, likelies_ave_finance_range)
+likeliness_names <- c(rep("Likely", 2))
+likeliness_types <- c("Budget", "Finance Range")
 likeliness_comp <- data.frame(likeliness_names, likeliness_types, likeliness_values)
-ggplot(data = likeliness_comp, aes(x = likeliness_names, y = likeliness_values, fill = likeliness_types)) + geom_bar(stat = "identity", position = "dodge") + xlab("") + ylab("Cost($)") + ggtitle("Likely vs Unlikely Budgets and Finance Ranges") + theme(legend.title = element_blank()) + annotate("text", label = "15% rise", x = 0.8, y = 2700) + annotate("text", label = "46% drop", x = 2.22, y = 1600) + geom_segment(aes(x = 1, xend = 1, y = likelies_ave_budget, yend = likelies_ave_finance_range), arrow = arrow(length = unit(0.3, "cm"))) + geom_segment(aes(x = 2, xend = 2, y = unlikelies_ave_budget, yend = unlikelies_ave_finance_range), arrow = arrow(length = unit(0.3, "cm")))
+ggplot(data = likeliness_comp, aes(x = likeliness_types, y = likeliness_values, fill = )) + geom_bar(stat = "identity", position = "dodge") + xlab("") + ylab("Cost($)") + ggtitle("Likelies Budgets and Finance Ranges") + theme(legend.title = element_blank()) + annotate("text", label = "15% rise", x = 1.3, y = 2700) + geom_segment(aes(x = 1.45, xend = 1.45, y = likelies_ave_budget, yend = likelies_ave_finance_range), arrow = arrow(length = unit(0.3, "cm")))
 #likelies tend to have lower budgets, but much larger finance ranges than average
 likeliness_ages_values <- c(likelies_ave_age, unlikelies_ave_age)
 likeliness_ages_names <- c("Likely", "Unlikely")
@@ -270,22 +270,22 @@ ggplot(data = likeliness_ages_comp, aes(x = likeliness_ages_types, y = likelines
 Leisure_Options <- c("Beach", "Sightseeing", "Trekking", "Skiing", "Other")
 for(f in 1:5){
   z <- paste("likelies_", Leisure_Options[f], sep = "", collapse = NULL)
-  assign(x=z, value = sum(data_3[f+25])/nrow(data_3))
+  assign(x=z, value = sum(data_3[f+29])/nrow(data_3))
 }
 for(g in 1:5){
   z <- paste("unlikelies_", Leisure_Options[g], sep = "", collapse = NULL)
-  assign(x=z, value = sum(data_4[g+25])/nrow(data_4))
+  assign(x=z, value = sum(data_4[g+29])/nrow(data_4))
 }
-Leisure_List <- rep(c("Beach", "Sightseeing and Touring", "Trekking", "Skiing, Golfing, Biking, etc...", "Other"), 2)
+Leisure_List <- c("Beach", "Sightseeing and Touring", "Trekking", "Skiing, Golfing, Biking, etc...", "Other")
 Leisure_List <- factor(Leisure_List, levels = c("Beach", "Sightseeing and Touring", "Trekking", "Skiing, Golfing, Biking, etc...", "Other"))
-Preferred_Percentages <- c(likelies_Beach, likelies_Sightseeing, likelies_Trekking, likelies_Skiing, likelies_Other, unlikelies_Beach, unlikelies_Sightseeing, unlikelies_Trekking, unlikelies_Skiing, unlikelies_Other)
-Likeness <- rep(c("Likely", "Unlikely"), each = 5)
+Preferred_Percentages <- c(likelies_Beach, likelies_Sightseeing, likelies_Trekking, likelies_Skiing, likelies_Other)
+Likeness <- rep(c("Likely"), 5)
 likeness_leisures <- data.frame(Likeness, Leisure_List, Preferred_Percentages)
-ggplot(likeness_leisures, aes(fill = Likeness, y = Preferred_Percentages, x = Leisure_List)) + geom_bar(position = "dodge", stat = "identity") + ggtitle("Likely vs Unlikely Preferred Travels") + labs(x = "", y = "Population Seeking(%)") + theme(legend.title = element_blank()) + scale_y_continuous(expand = c(0,0), breaks = round(seq(min(likeness_leisures$Preferred_Percentages), max(likeness_leisures$Preferred_Percentages), by = 0.1), 1))
+ggplot(likeness_leisures, aes(y = Preferred_Percentages, x = Leisure_List)) + geom_bar(position = "dodge", stat = "identity") + ggtitle("Likely Preferred Travels") + labs(x = "", y = "Population Seeking(%)") + theme(legend.title = element_blank()) + scale_y_continuous(expand = c(0,0), breaks = round(seq(min(likeness_leisures$Preferred_Percentages), max(likeness_leisures$Preferred_Percentages), by = 0.1), 1), labels = scales::percent)
 cities_canada <- read.csv("canadian_cities.csv")
 cities_canada <- unique(cities_canada[,2:6])
 plot(cities_canada$longitude, cities_canada$lattitude)
-cities_data <- subset(wishpond, select = c("Email", "Geoip.City", "Geoip.State", "ave_finance_range", "ave_vacation_budget", "ave_age_range", "leisure_travel_type_Beach", "leisure_travel_type_Sightseeing_Touring", "leisure_travel_type_Trekking", "leisure_travel_type_Skiing_Golfing_Biking", "leisure_travel_type_Other", "likelihood"))
+cities_data <- subset(wishpond, select = c("Geoip.City", "Geoip.State", "ave_finance_range", "ave_vacation_budget", "ave_age_range", "leisure_travel_type_Beach", "leisure_travel_type_Sightseeing_Touring", "leisure_travel_type_Trekking", "leisure_travel_type_Skiing_Golfing_Biking", "leisure_travel_type_Other", "likelihood"))
 cities_data <- subset(cities_data, Geoip.City !="")
 cities_data$lat <- 0
 cities_data$long <- 0
@@ -368,3 +368,43 @@ cities_data <- subset(cities_data, likelihood!="Unlikely")
 cities_data <- subset(cities_data, likelihood!="More likely not")
 ggplot2.scatterplot(data = cities_data, xName = "long", yName = "lat", groupName = "Geoip.State", size = length(Province_Options), backgroundColor = "white", groupColors = c("red", "blue", "green", "pink", "grey", "purple", "orange", "turquoise", "maroon", "black")) + ggtitle("Location of Likely Users") + labs(x = "Lattitude", y = "Longitude") + theme(legend.title = element_blank()) + ylim(42, 63) + xlim(-135, -50)
 #the biggest difference between the two is that the east coasters numbers seem to drop quite a bit while west coast stays largely the same
+#province split, big city split, east/west split
+#user profile: city, age group, likes/dislikes - most common profiles 3-5
+likely_wishpond <- subset(wishpond, How.Willing.Would.You.Be.To.Finance.A.Vacation.!="More likely not")
+likely_wishpond <- subset(likely_wishpond, How.Willing.Would.You.Be.To.Finance.A.Vacation.!="Unlikely")
+likely_wishpond$gender <- ""
+names_gender_data <- read.csv("name_gender.csv")
+names_gender_data$gender <- as.character(names_gender_data$gender)
+library(stringi)
+for(r in 1:nrow(wishpond)){
+  a <- which(stri_cmp_equiv(likely_wishpond$First.Name[r], names_gender_data$name, strength=2))
+  if(length(a)==1){
+    likely_wishpond$gender[r] <- names_gender_data$gender[a]
+  }
+  a <- 0
+}
+gender_table <- as.data.frame(table(likely_wishpond$gender))
+age_table <- as.data.frame(table(likely_wishpond$Please.Tell.Us.Your.Age))
+age_table <- subset(age_table, Var1!="")
+city_table <- as.data.frame(table(likely_wishpond$Geoip.City))
+city_table <- subset(city_table, Var1!="")
+vacation_budget_table <- as.data.frame(table(likely_wishpond$How.Much.Do.You.Typically.Spend.On.Your.Vacation.Packages..Fligh))
+vacation_budget_table <- subset(vacation_budget_table, Var1!="")
+finance_budget_table <- as.data.frame(table(likely_wishpond$Whatis.The.Desired.Amount.You.Would.Want.To.Finance.))
+finance_budget_table <- subset(finance_budget_table, Var1!="")
+likes_table <- as.data.frame(table(likely_wishpond$What.Type.Of.Leisure.Travel.Do.You.Like))
+likes_table <- subset(likes_table, Var1!="")
+more_money_table <- as.data.frame(table(likely_wishpond$If.You.Had.More.Money.To.Spend.On.A.Vacation..How.Would.You.Spen))
+more_money_table <- subset(more_money_table, Var1!="")
+preferred_agent_table <- as.data.frame(table(likely_wishpond$Which.Of.The.Following.Is.Your.Preferred.Travel.Agent.))
+preferred_agent_table <- subset(preferred_agent_table, Var1!="")
+profile_age <- c("45-54 years old", "25-34 years old", "35-44 years old")
+profile_gender <- c("F", "F", "M")
+profile_city <- c("Toronto", "Calgary", "Edmonton")
+profile_province <- c("Ontario", "Alberta", "Alberta")
+profile_vacation_budget <- c("$1,000-$2,000", "$2,000-$5,000", "<$1,000")
+profile_finance_budget <- c("$1,500-$3,000", "$0-$1,500", "$3,000-$5,000")
+profile_likes <- c("Beach, Sightseeing and Touring", "Beach", "Sightseeing and Touring")
+profile_more_money <- c("Longer vacation", "Additional vacation", "More expensive destination")
+profile_preferred_agent <- c("Expedia", "WestJet Vacations", "Air Canada")
+profiles <- data.frame(profile_age, profile_gender, profile_vacation_budget, profile_finance_budget, profile_likes, profile_more_money, profile_preferred_agent)
