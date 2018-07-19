@@ -1,0 +1,318 @@
+"","Var1","Freq"
+"2","Abbotsford",8
+"3","Acton Vale",1
+"4","Airdrie",2
+"5","Ajax",4
+"6","Akron",0
+"7","Alexandria",0
+"8","Alma",1
+"9","Amherstburg",1
+"10","Amherstview",1
+"11","Ancaster",2
+"12","Angus",1
+"13","Armagh",1
+"14","Aurora",2
+"15","Bala",1
+"16","Barrie",9
+"17","Beaumont",1
+"18","Beaverton",1
+"19","Bell Island",1
+"20","Belleisle Creek",1
+"21","Bentley",1
+"22","Birch Island",1
+"23","Blind Bay",0
+"24","Bobcaygeon",0
+"25","Bolton",1
+"26","Boucherville",1
+"27","Bowmanville",1
+"28","Bradford West Gwillimbury",3
+"29","Brampton",5
+"30","Brandon",2
+"31","Brantford",1
+"32","Brentwood",1
+"33","Brighton",1
+"34","Bromont",1
+"35","Brooklyn",1
+"36","Brookside",1
+"37","Brossard",1
+"38","Bruno",1
+"39","Buffalo",1
+"40","Burlington",5
+"41","Burnaby",7
+"42","Calgary",38
+"43","Cambridge",0
+"44","Camlachie",0
+"45","Campbell River",1
+"46","Campbellton",1
+"47","Candiac",1
+"48","Canmore",1
+"49","Cap-aux-Meules",1
+"50","Caraquet",1
+"51","Carbonear",1
+"52","Carleton Place",0
+"53","Castlegar",0
+"54","Chambly",0
+"55","Chateauguay",1
+"56","Chatham",1
+"57","Chestermere",1
+"58","Chicoutimi",1
+"59","Chilliwack",2
+"60","Cobble Hill",1
+"61","Cobourg",2
+"62","Cold Lake",0
+"63","Collingwood",1
+"64","Compeer",0
+"65","Coquitlam",2
+"66","Cornwall",2
+"67","Cranbrook",0
+"68","Cumberland",0
+"69","Dartmouth",3
+"70","Dauphin",1
+"71","Dawson Creek",2
+"72","Delta",1
+"73","Denver",1
+"74","Didsbury",0
+"75","Dieppe",0
+"76","Dixon",0
+"77","Donnelly",1
+"78","Dorchester",1
+"79","Drumheller",1
+"80","Dryden",0
+"81","Duncan",2
+"82","Edmonton",33
+"83","Eganville",1
+"84","Elmsdale",1
+"85","Embree",1
+"86","Espanola",1
+"87","Etobicoke",3
+"88","Fairview, Alberta",1
+"89","Falconbridge",1
+"90","Fergus",1
+"91","Florenceville-Bristol",1
+"92","Fort McMurray",1
+"93","Fort Saskatchewan",4
+"94","Fredericton",3
+"95","Gander",1
+"96","Garson",0
+"97","Gatineau",1
+"98","Georgetown",0
+"99","Glace Bay",0
+"100","Granby",0
+"101","Grand Falls-Windsor",1
+"102","Grand Forks",1
+"103","Grande Prairie",2
+"104","Greater Sudbury",2
+"105","Greenwood",1
+"106","Grimsby",1
+"107","Guelph",3
+"108","Halifax",11
+"109","Hamilton",8
+"110","Hampton",1
+"111","Happy Valley-Goose Bay",0
+"112","Harbour Main",1
+"113","Hay River",0
+"114","Heron Bay",0
+"115","Hinchinbrooke",0
+"116","Hinton",0
+"117","Holyrood",0
+"118","Hood",0
+"119","Hudson Bay",1
+"120","Innisfil",1
+"121","Irving",1
+"122","Joliette",0
+"123","Kamloops",2
+"124","Kanata",2
+"125","Kelowna",7
+"126","Kemptville",2
+"127","Kenora",1
+"128","Kensington",0
+"129","Kentville",2
+"130","Killaloe",1
+"131","Kimberley",1
+"132","Kingston",4
+"133","Kitchener",3
+"134","Kleinburg Station",1
+"135","L'Ancienne-Lorette",0
+"136","La Baie",1
+"137","Lachine",0
+"138","Lacombe",2
+"139","Ladysmith",1
+"140","Lakefield",1
+"141","Lanark",1
+"142","Laval",4
+"143","Leamington",1
+"144","Leduc",2
+"145","Lethbridge",1
+"146","Lillooet",1
+"147","Lindsay",2
+"148","Listowel",0
+"149","Lively",1
+"150","London",11
+"151","Longueuil",0
+"152","Macklin",1
+"153","Manning",1
+"154","Maple",3
+"155","Maple Ridge",0
+"156","Marianna",0
+"157","Marieville",0
+"158","Markham",2
+"159","Martensville",0
+"160","Mascouche",1
+"161","Medicine Hat",0
+"162","Melita",0
+"163","Melville",0
+"164","Midland",0
+"165","Millbrook",1
+"166","Millet",1
+"167","Milton",2
+"168","Miramichi",1
+"169","Mississauga",21
+"170","Moncton",4
+"171","Mont-Tremblant",1
+"172","Montague",1
+"173","Montego Bay",1
+"174","Montreal",26
+"175","Morden",1
+"176","Morrisburg",0
+"177","Mount Pearl",1
+"178","Mountain View",1
+"179","Nanaimo",2
+"180","Napanee",0
+"181","Nelson",1
+"182","Nelspruit",1
+"183","Nepean",0
+"184","New Glasgow",1
+"185","New Hamburg",1
+"186","New Westminster",1
+"187","New York",1
+"188","Newmarket",2
+"189","Niagara Falls",1
+"190","North Bay",0
+"191","North Vancouver",1
+"192","North York",1
+"193","Oakville",1
+"194","Olds",1
+"195","Orillia",1
+"196","Orleans",1
+"197","Oshawa",5
+"198","Ottawa",18
+"199","Owen Sound",1
+"200","Oxford",0
+"201","Palmerston",0
+"202","Paradise Cove",2
+"203","Parksville",1
+"204","Peachland",0
+"205","Pefferlaw",1
+"206","Pembroke",2
+"207","Peterborough",3
+"208","Pickering",0
+"209","Picton",0
+"210","Pierrefonds",5
+"211","Pitt Meadows",2
+"212","Plaster Rock",0
+"213","Pointe-Claire",1
+"214","Port Alberni",1
+"215","Port Colborne",1
+"216","Port Coquitlam",1
+"217","Port Elgin",1
+"218","Port Moody",1
+"219","Port Royal",0
+"220","Portage la Prairie",1
+"221","Powell River",1
+"222","Prince Albert",2
+"223","Prince George",2
+"224","Prince Rupert",0
+"225","Québec",5
+"226","Quesnel",0
+"227","Quispamsis",2
+"228","Red Deer",3
+"229","Redwater",0
+"230","Regina",8
+"231","Revelstoke",1
+"232","Richmond",5
+"233","Richmond Hill",5
+"234","Ridgetown",0
+"235","Rigaud",0
+"236","Rimouski",1
+"237","Rockland",1
+"238","Saanichton",0
+"239","Sabrevois",0
+"240","Saint John",2
+"241","Saint-Constant",1
+"242","Saint-Eustache",1
+"243","Saint-Jean-de-Matha",1
+"244","Saint-Jean-sur-Richelieu",1
+"245","Saint-Joachim-de-Shefford",1
+"246","Saint-Laurent",1
+"247","Saint-Sauveur",0
+"248","Sainte-Adele",1
+"249","Sainte-Brigitte-de-Laval",0
+"250","Sainte-Catherine",1
+"251","Saratoga",2
+"252","Sarnia",2
+"253","Saskatoon",6
+"254","Sault Ste. Marie",2
+"255","Scarborough",14
+"256","Sechelt",1
+"257","Sherbrooke",2
+"258","Sherwood Park",1
+"259","Sicamous",1
+"260","Southampton",1
+"261","Spruce Grove",1
+"262","Squamish",0
+"263","St. Albert",1
+"264","St. Catharines",1
+"265","St. John's",4
+"266","St. Thomas",0
+"267","Steinbach",0
+"268","Stellarton",2
+"269","Stephenville Crossing",1
+"270","Stoney Creek",3
+"271","Stratford",1
+"272","Strathroy",1
+"273","Summerland",0
+"274","Sunderland",0
+"275","Surrey",17
+"276","Swift Current",1
+"277","Sydney",1
+"278","Sylvan Lake",2
+"279","Tarantum",1
+"280","Tecumseh",0
+"281","Temagami",1
+"282","Terrace",1
+"283","Terrebonne",2
+"284","Thetford-Mines",1
+"285","Thompson",1
+"286","Thornhill",6
+"287","Thunder Bay",4
+"288","Tillsonburg",1
+"289","Timmins",0
+"290","Tofield",1
+"291","Toronto",62
+"292","Township of Langley",3
+"293","Traunkirchen",0
+"294","Trenton",1
+"295","Trois-Rivières",1
+"296","Trossachs",0
+"297","Ucluelet",0
+"298","Unity",1
+"299","Vancouver",23
+"300","Varennes",1
+"301","Vaudreuil-Dorion",0
+"302","Vaughan",1
+"303","Vernon",0
+"304","Victoria",4
+"305","Victoriaville",1
+"306","Wabasca-Desmarais",1
+"307","Walkerton",0
+"308","Waterloo",1
+"309","Welland",1
+"310","Whitby",3
+"311","White Rock",1
+"312","Whitney",1
+"313","Windsor",3
+"314","Windsor Junction",0
+"315","Winnipeg",20
+"316","Woodbridge",2
+"317","Woodville",0
+"318","Yorkton",1
